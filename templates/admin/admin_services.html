@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin | Manage Services</title>
+
+<style>
+
+body{
+    font-family: Arial;
+}
+
+/* MAIN CONTAINER */
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+/* HEADER */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.page-header h2{
+    font-size:28px;
+}
+
+.page-header p{
+    color:#94a3b8;
+}
+
+/* ADD BUTTON */
+
+.add-btn{
+    padding:10px 18px;
+    background:#4da3ff;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+}
+
+.add-btn:hover{
+    background:#3b8ee6;
+}
+
+/* FILTER BAR */
+
+.filter-bar{
+    display:flex;
+    gap:15px;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.filter-bar select{
+    padding:10px 14px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:#0e1f3b;
+    color:white;
+}
+
+.filter-btn{
+    padding:10px 16px;
+    background:#4da3ff;
+    border:none;
+    border-radius:8px;
+    color:white;
+    cursor:pointer;
+}
+
+.filter-btn:hover{
+    background:#3b8ee6;
+}
+
+/* TABLE CARD */
+
+.table-card{
+    background:#0e1f3b;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.4);
+}
+
+/* TABLE */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:16px;
+    text-align:left;
+}
+
+th{
+    font-size:12px;
+    text-transform:uppercase;
+    color:#94a3b8;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+td{
+    font-size:14px;
+    color:#e2e8f0;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+tr:hover{
+    background:rgba(77,163,255,0.05);
+}
+
+/* IMAGE */
+
+.service-img{
+    width:80px;
+    height:60px;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+/* DELETE BUTTON */
+
+.delete-btn{
+    padding:7px 14px;
+    background:#ef4444;
+    color:white;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+.delete-btn:hover{
+    background:#dc2626;
+}
+
+</style>
+</head>
+
+<body>
+
+{% include 'admin/header.html' %}
+
+<div class="container">
+
+    <div class="page-header">
+        <div>
+            <h2>Manage Services</h2>
+            <p>Add, edit, or remove platform services</p>
+        </div>
+
+        <a href="{% url 'adminapp:add_service' %}" class="add-btn">
+            + Add Service
+        </a>
+    </div>
+
+    <!-- FILTER DROPDOWN -->
+
+    <form method="get" class="filter-bar">
+
+        <select name="type">
+
+            <option value="">All Services</option>
+
+            <option value="movie" {% if request.GET.type == "movie" %}selected{% endif %}>
+                Movies
+            </option>
+
+            <option value="hotel" {% if request.GET.type == "hotel" %}selected{% endif %}>
+                Hotels
+            </option>
+
+            <option value="restaurant" {% if request.GET.type == "restaurant" %}selected{% endif %}>
+                Restaurants
+            </option>
+
+            <option value="train" {% if request.GET.type == "train" %}selected{% endif %}>
+                Train Tickets
+            </option>
+
+            <option value="bus" {% if request.GET.type == "bus" %}selected{% endif %}>
+                Bus Tickets
+            </option>
+
+        </select>
+
+        <button type="submit" class="filter-btn">Filter</button>
+
+    </form>
+
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th> </th>
+                    <th>Location/Route</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for service in services %}
+
+                <tr>
+
+                    <td>
+                        <img src="{{ service.image.url }}" class="service-img">
+                    </td>
+
+                    <td>{{ service.name }}</td>
+
+                    <td>{{ service.get_code_display }}</td>
+
+                    <td>
+                        {% if service.source %}
+                            {{ service.source }} → {{ service.destination }}
+                        {% elif service.location %}
+                            {{ service.location }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a href="{% url 'adminapp:delete_service' service.id %}"
+                           class="delete-btn"
+                           onclick="return confirm('Delete this service?');">
+                           Delete
+                        </a>
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="5">No services added yet.</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% include 'admin/footer.html' %}
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<style>
+body{
+background:#081a36;
+color:white;
+font-family:Arial;
+}
+
+.booking-container{
+max-width:700px;
+margin:60px auto;
+background:#0f2a4d;
+padding:40px;
+border-radius:16px;
+text-align:center;
+}
+
+.seat-row{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-bottom:10px;
+}
+
+.seat input{
+display:none;
+}
+
+.seat span{
+display:inline-block;
+width:40px;
+height:40px;
+line-height:40px;
+background:#3b82f6;
+border-radius:6px;
+cursor:pointer;
+}
+
+.seat input:checked + span{
+background:#16a34a;
+}
+
+.seat input:disabled + span{
+background:#ef4444;
+}
+
+.btn{
+padding:12px 25px;
+margin:10px;
+background:#2563eb;
+border:none;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+</style>
+
+
+<div class="booking-container">
+
+<h2>Select Bus Seats - {{ service.name }}</h2>
+
+<!-- ✅ DATE FORM (GET) -->
+<form method="GET">
+    <p>Travel Date</p>
+    <input type="date" name="travel_date"
+           value="{{ travel_date }}"
+           onchange="this.form.submit()" required>
+</form>
+
+<br>
+
+<!-- ✅ SEAT FORM (POST) -->
+<form method="POST">
+{% csrf_token %}
+
+<!-- pass selected date -->
+<input type="hidden" name="travel_date" value="{{ travel_date }}">
+
+{% for row in "ABCDEF" %}
+<div class="seat-row">
+
+{% for num in "1234" %}
+{% with seat=row|add:num %}
+
+<label class="seat">
+<input type="checkbox" name="seats" value="{{seat}}"
+{% if seat in booked_seats %}disabled{% endif %}>
+<span>{{seat}}</span>
+</label>
+
+{% endwith %}
+{% endfor %}
+
+</div>
+{% endfor %}
+
+<br>
+
+<button type="submit" class="btn">Continue to Payment</button>
+
+</form>
+
+</div>

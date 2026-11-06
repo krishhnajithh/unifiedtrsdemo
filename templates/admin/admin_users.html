@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin | Users</title>
+
+<style>
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+/* PAGE TITLE */
+
+.page-header{
+    margin-bottom:35px;
+}
+
+.page-header h2{
+    font-size:28px;
+    margin-bottom:6px;
+}
+
+.page-header p{
+    color:#94a3b8;
+}
+
+/* SEARCH */
+
+.search-box{
+    margin-bottom:25px;
+}
+
+.search-box input{
+    padding:10px 14px;
+    width:260px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.08);
+    background:#0e1f3b;
+    color:white;
+}
+
+.search-box button{
+    padding:10px 18px;
+    margin-left:8px;
+    background:#4da3ff;
+    border:none;
+    border-radius:8px;
+    color:white;
+    cursor:pointer;
+}
+
+.search-box button:hover{
+    background:#3b8ee6;
+}
+
+/* TABLE */
+
+.table-card{
+    background:#0e1f3b;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.4);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:16px;
+    text-align:left;
+}
+
+th{
+    font-size:12px;
+    text-transform:uppercase;
+    color:#94a3b8;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+td{
+    font-size:14px;
+    color:#e2e8f0;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+tr:hover{
+    background:rgba(77,163,255,0.05);
+}
+
+/* DELETE BUTTON */
+
+.delete-btn{
+    background:#ef4444;
+    border:none;
+    padding:7px 14px;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+}
+
+.delete-btn:hover{
+    background:#dc2626;
+}
+
+.status{
+    color:#22c55e;
+    font-weight:500;
+}
+
+</style>
+
+</head>
+
+<body>
+
+{% include 'admin/header.html' %}
+
+<div class="container">
+
+    <div class="page-header">
+        <h2>Registered Users</h2>
+        <p>Manage all registered platform users</p>
+    </div>
+
+    <!-- SEARCH -->
+    <form method="get" class="search-box">
+        <input type="text"
+               name="q"
+               placeholder="Search by username"
+               value="{{ query|default:'' }}">
+
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- USERS TABLE -->
+    <div class="table-card">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.username }}</td>
+                    <td class="status">Active</td>
+
+                    <td>
+                        <form method="post"
+                              action="{% url 'adminapp:delete_user' user.id %}"
+                              onsubmit="return confirm('Delete this user?');">
+                            {% csrf_token %}
+                            <button class="delete-btn">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="4">No users found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% include 'admin/footer.html' %}
+
+</body>
+</html>

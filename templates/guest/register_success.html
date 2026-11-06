@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UTRS | Registration Successful</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+        }
+
+        .success-card {
+            width: 420px;
+            background: linear-gradient(145deg, #0f172a, #020617);
+            padding: 45px 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .success-icon {
+            font-size: 48px;
+            color: #38bdf8;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        p {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .login-btn {
+            padding: 12px 30px;
+            background: #38bdf8;
+            color: #020617;
+            font-weight: 600;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="success-card">
+    <div class="success-icon">✔</div>
+    <h2>Account Created Successfully</h2>
+    <p>
+        Your account has been verified and created.<br>
+        You can now log in and start booking services.
+    </p>
+
+    <a href="{% url 'guest_login' %}">
+        <button class="login-btn">Go to Login</button>
+    </a>
+</div>
+
+</body>
+</html>

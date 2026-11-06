@@ -1,0 +1,99 @@
+<style>
+body{
+background:#081a36;
+color:white;
+font-family:Arial;
+}
+
+.payment-box{
+max-width:600px;
+margin:80px auto;
+background:#0f2a4d;
+padding:40px;
+border-radius:16px;
+text-align:center;
+}
+
+.btn{
+padding:12px 25px;
+margin:10px;
+background:#2563eb;
+border:none;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+
+.qr{
+margin-top:20px;
+}
+</style>
+
+
+<div class="payment-box">
+
+<h2>Confirm Your Booking</h2>
+
+<p><b>Service:</b> {{booking.service}}</p>
+
+<!-- MOVIE -->
+{% if booking.show_date %}
+<p><b>Date:</b> {{booking.show_date}}</p>
+<p><b>Time:</b> {{booking.show_time}}</p>
+{% endif %}
+
+<!-- BUS / TRAIN -->
+{% if booking.travel_date %}
+<p><b>Travel Date:</b> {{booking.travel_date}}</p>
+{% endif %}
+
+<!-- HOTEL -->
+{% if booking.check_in %}
+<p><b>Check In:</b> {{booking.check_in}}</p>
+<p><b>Check Out:</b> {{booking.check_out}}</p>
+{% endif %}
+
+{% if booking.travel_class %}
+<p><b>Class:</b> {{booking.travel_class}}</p>
+{% endif %}
+
+{% if booking.passengers %}
+<p><b>Passengers:</b> {{booking.passengers}}</p>
+{% endif %}
+
+{% if booking.seats %}
+<p><b>Seats:</b> {{booking.seats}}</p>
+{% endif %}
+
+<p><b>Total:</b> ₹{{booking.total}}</p>
+
+
+<form method="POST" action="{% url 'complete_booking' %}">
+{% csrf_token %}
+
+<h3>Payment Method</h3>
+
+<label>
+<input type="radio" name="payment_method" value="Pay on Arrival" required>
+Pay on Arrival
+</label>
+
+<br><br>
+
+<label>
+<input type="radio" name="payment_method" value="Online Payment">
+Pay Online
+</label>
+
+<div class="qr">
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DemoPayment">
+<p>Scan QR (Demo)</p>
+</div>
+
+<br>
+
+<button class="btn">Confirm Booking</button>
+
+</form>
+
+</div>

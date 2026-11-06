@@ -1,0 +1,234 @@
+<style>
+body{
+background:#081a36;
+color:white;
+font-family:Arial;
+}
+
+.booking-container{
+max-width:800px;
+margin:60px auto;
+background:#0f2a4d;
+padding:40px;
+border-radius:16px;
+box-shadow:0 10px 40px rgba(0,0,0,0.5);
+text-align:center;
+}
+
+.title{
+margin-bottom:20px;
+font-size:26px;
+}
+
+.screen{
+background:linear-gradient(to bottom,#d1d5db,#9ca3af);
+color:black;
+padding:12px;
+margin:30px auto;
+width:70%;
+border-radius:10px;
+font-weight:bold;
+box-shadow:0 10px 20px rgba(0,0,0,0.4);
+}
+
+.legend{
+display:flex;
+justify-content:center;
+gap:25px;
+margin-bottom:20px;
+}
+
+.legend div{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.legend span{
+width:20px;
+height:20px;
+border-radius:4px;
+display:inline-block;
+}
+
+.available{background:#3b82f6;}
+.selected{background:#16a34a;}
+.booked{background:#ef4444;}
+
+.seat-container{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+}
+
+.seat-row{
+display:flex;
+gap:10px;
+}
+
+.seat input{
+display:none;
+}
+
+.seat span{
+display:inline-block;
+width:40px;
+height:40px;
+line-height:40px;
+text-align:center;
+background:#3b82f6;
+border-radius:6px;
+cursor:pointer;
+transition:0.25s;
+}
+
+.seat span:hover{
+transform:scale(1.15);
+}
+
+.seat input:checked + span{
+background:#16a34a;
+}
+
+.seat input:disabled + span{
+background:#ef4444;
+cursor:not-allowed;
+}
+
+.price-box{
+margin-top:25px;
+font-size:20px;
+font-weight:bold;
+}
+
+.book-btn{
+margin-top:20px;
+padding:12px 30px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.book-btn:hover{
+background:#1d4ed8;
+}
+
+/* Cinema screen effect */
+.screen{
+background:linear-gradient(to bottom,#e5e7eb,#cbd5f5);
+text-align:center;
+padding:12px;
+margin:30px auto;
+width:60%;
+border-radius:12px;
+font-weight:bold;
+box-shadow:0 10px 20px rgba(0,0,0,0.3);
+letter-spacing:2px;
+}
+</style>
+
+
+<div class="booking-container">
+
+<h2 class="title">Select Seats - {{ service.service_name }}</h2>
+
+<div class="screen">SCREEN</div>
+
+<div class="legend">
+    <div><span class="available"></span> Available</div>
+    <div><span class="selected"></span> Selected</div>
+    <div><span class="booked"></span> Booked</div>
+</div>
+
+<p>
+Show Date: {{ show_date }} <br>
+Show Time: {{ show_time }}
+</p>
+
+
+<form method="POST">
+{% csrf_token %}
+
+<!-- Hidden booking info -->
+<input type="hidden" name="service" value="{{ service.service_name }}">
+<input type="hidden" name="show_date" value="{{ show_date }}">
+<input type="hidden" name="show_time" value="{{ show_time }}">
+<input type="hidden" name="total" id="total_input">
+
+
+<div class="seat-container">
+
+{% for row in "ABCDEF" %}
+<div class="seat-row">
+
+{% for num in "12345678" %}
+{% with seat=row|add:num %}
+
+<label class="seat">
+<input type="checkbox" name="seats" value="{{seat}}"
+{% if seat in booked_seats %}disabled{% endif %}>
+<span>{{seat}}</span>
+</label>
+
+{% endwith %}
+{% endfor %}
+
+</div>
+{% endfor %}
+
+</div>
+
+
+<div class="price-box">
+<p>Total Price: ₹<span id="total">0</span></p>
+</div>
+
+<button class="book-btn">Confirm Booking</button>
+
+</form>
+
+</div>
+
+
+<script>
+
+const seatPrice = {
+    A:250,
+    B:250,
+    C:180,
+    D:180,
+    E:120,
+    F:120
+}
+
+const checkboxes = document.querySelectorAll('input[name="seats"]')
+const totalBox = document.getElementById("total")
+const totalInput = document.getElementById("total_input")
+
+checkboxes.forEach(box => {
+
+    box.addEventListener("change", function(){
+
+        let total = 0
+
+        document.querySelectorAll('input[name="seats"]:checked').forEach(seat =>{
+
+            let row = seat.value[0]
+
+            total += seatPrice[row]
+
+        })
+
+        totalBox.innerText = total
+        totalInput.value = total
+
+    })
+
+})
+
+</script>

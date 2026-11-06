@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Bookings</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg,#071a2f,#0b2447);
+    color: white;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+/* TITLE */
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* SECTION */
+.section {
+    margin-bottom: 50px;
+}
+
+/* SECTION TITLE */
+.section h2 {
+    margin-bottom: 20px;
+    border-left: 5px solid #1e90ff;
+    padding-left: 10px;
+}
+
+/* CARD */
+.card {
+    background: rgba(15,42,77,0.9);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transition: 0.3s;
+}
+
+/* HOVER */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(30,144,255,0.4);
+}
+
+/* GRID INSIDE CARD */
+.card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* LABEL */
+.label {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* VALUE */
+.value {
+    font-weight: bold;
+}
+
+/* BADGES */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+/* STATUS COLORS */
+.confirmed {
+    background: #2ecc71;
+}
+
+.pending {
+    background: orange;
+}
+
+.cancelled {
+    background: red;
+}
+
+/* EMPTY */
+.empty {
+    opacity: 0.6;
+    font-style: italic;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📜 My Bookings</h1>
+
+<!-- 🎬 MOVIES -->
+<div class="section">
+<h2>🎬 Movies</h2>
+
+{% for b in movie_bookings %}
+<div class="card">
+    <strong>{{ b.movie_name }}</strong>
+
+    <div class="card-grid">
+        <div>
+            <div class="label">Seats</div>
+            <div class="value">{{ b.seats }}</div>
+        </div>
+        <div>
+            <div class="label">Date & Time</div>
+            <div class="value">{{ b.booking_date }} | {{ b.show_time }}</div>
+        </div>
+        <div>
+            <div class="label">Booking ID</div>
+            <div class="value">#{{ b.id }}</div>
+        </div>
+        <div>
+            <div class="label">Total</div>
+            <div class="value">₹{{ b.total_price }}</div>
+        </div>
+    </div>
+
+    <span class="badge confirmed">Confirmed</span>
+</div>
+{% empty %}
+<p class="empty">No movie bookings</p>
+{% endfor %}
+</div>
+
+<!-- 🚌 BUS -->
+<div class="section">
+<h2>🚌 Bus</h2>
+
+{% for b in bus_bookings %}
+<div class="card">
+    <strong>{{ b.service.name }}</strong>
+
+    <div class="card-grid">
+        <div>
+            <div class="label">Route</div>
+            <div class="value">{{ b.from_city }} → {{ b.to_city }}</div>
+        </div>
+        <div>
+            <div class="label">Travel Date</div>
+            <div class="value">{{ b.travel_date }}</div>
+        </div>
+        <div>
+            <div class="label">Seats</div>
+            <div class="value">{{ b.seat_number }}</div>
+        </div>
+        <div>
+            <div class="label">Booking ID</div>
+            <div class="value">#{{ b.id }}</div>
+        </div>
+    </div>
+
+    <span class="badge confirmed">Confirmed</span>
+</div>
+{% empty %}
+<p class="empty">No bus bookings</p>
+{% endfor %}
+</div>
+
+<!-- 🚆 TRAIN -->
+<div class="section">
+<h2>🚆 Train</h2>
+
+{% for b in train_bookings %}
+<div class="card">
+    <strong>{{ b.train_name }}</strong>
+
+    <div class="card-grid">
+        <div>
+            <div class="label">Route</div>
+            <div class="value">{{ b.from_station }} → {{ b.to_station }}</div>
+        </div>
+        <div>
+            <div class="label">Travel Date</div>
+            <div class="value">{{ b.travel_date }}</div>
+        </div>
+        <div>
+            <div class="label">Seat</div>
+            <div class="value">{{ b.seat_number }}</div>
+        </div>
+        <div>
+            <div class="label">Booking ID</div>
+            <div class="value">#{{ b.id }}</div>
+        </div>
+    </div>
+
+    <span class="badge confirmed">Confirmed</span>
+</div>
+{% empty %}
+<p class="empty">No train bookings</p>
+{% endfor %}
+</div>
+
+<!-- 🏨 HOTEL -->
+<div class="section">
+<h2>🏨 Hotel</h2>
+
+{% for b in hotel_bookings %}
+<div class="card">
+    <strong>{{ b.hotel_name }}</strong>
+
+    <div class="card-grid">
+        <div>
+            <div class="label">Check-in</div>
+            <div class="value">{{ b.check_in }}</div>
+        </div>
+        <div>
+            <div class="label">Check-out</div>
+            <div class="value">{{ b.check_out }}</div>
+        </div>
+        <div>
+            <div class="label">Guests</div>
+            <div class="value">{{ b.guests }}</div>
+        </div>
+        <div>
+            <div class="label">Booking ID</div>
+            <div class="value">#{{ b.id }}</div>
+        </div>
+    </div>
+
+    <span class="badge confirmed">Confirmed</span>
+</div>
+{% empty %}
+<p class="empty">No hotel bookings</p>
+{% endfor %}
+</div>
+
+<!-- 🍽 RESTAURANT -->
+<div class="section">
+<h2>🍽 Restaurant</h2>
+
+{% for b in table_bookings %}
+<div class="card">
+    <strong>{{ b.table.service.name }}</strong>
+
+    <div class="card-grid">
+        <div>
+            <div class="label">Table</div>
+            <div class="value">Table {{ b.table.table_number }}</div>
+        </div>
+        <div>
+            <div class="label">Guests</div>
+            <div class="value">{{ b.guests }}</div>
+        </div>
+        <div>
+            <div class="label">Date</div>
+            <div class="value">{{ b.booking_date }}</div>
+        </div>
+        <div>
+            <div class="label">Time</div>
+            <div class="value">{{ b.booking_time }}</div>
+        </div>
+        <div>
+            <div class="label">Booking ID</div>
+            <div class="value">#{{ b.id }}</div>
+        </div>
+    </div>
+
+    <span class="badge confirmed">Confirmed</span>
+</div>
+{% empty %}
+<p class="empty">No restaurant bookings</p>
+{% endfor %}
+</div>
+
+</div>
+
+</body>
+</html>

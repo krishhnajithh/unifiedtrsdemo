@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UTRS | Create Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+        }
+
+        .card {
+            width: 420px;
+            background: linear-gradient(145deg, #0f172a, #020617);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #38bdf8;
+        }
+
+        input {
+            width: 90%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: none;
+            background: #020617;
+            color: #ffffff;
+            outline: none;
+        }
+
+        button {
+            width: 95%;
+            padding: 12px;
+            margin-top: 10px;
+            background: #38bdf8;
+            color: #020617;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .note {
+            margin-top: 15px;
+            font-size: 13px;
+            text-align: center;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Create Account</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Email Address" required>
+        <input type="text" name="username" placeholder="Create Username" required>
+        <input type="password" name="password" placeholder="Create Password" required>
+        <button type="submit">Send OTP</button>
+    </form>
+    {% if error %}
+<div style="
+    background:#fee2e2;
+    color:#991b1b;
+    padding:12px 16px;
+    border-radius:6px;
+    margin-bottom:15px;
+    font-size:14px;">
+    {{ error }}
+</div>
+{% endif %}
+    <div class="note">An OTP will be sent to your registered email</div>
+</div>
+
+
+</body>
+</html>
+ 

@@ -1,0 +1,84 @@
+<style>
+body{
+background:#081a36;
+color:white;
+text-align:center;
+font-family:Arial;
+}
+
+.box{
+margin-top:100px;
+background:#0f2a4d;
+display:inline-block;
+padding:40px 60px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+h1{
+margin-bottom:20px;
+}
+
+p{
+font-size:16px;
+margin:6px 0;
+}
+
+a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #1e90ff;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+}
+</style>
+
+
+<div class="box">
+
+<h1>🎉 Booking Successful!</h1>
+
+<p><b>Service:</b> {{booking.service}}</p>
+
+<!-- MOVIE -->
+{% if booking.show_date %}
+<p><b>Date:</b> {{booking.show_date}}</p>
+<p><b>Time:</b> {{booking.show_time}}</p>
+{% endif %}
+
+<!-- BUS / TRAIN -->
+{% if booking.travel_date %}
+<p><b>Travel Date:</b> {{booking.travel_date}}</p>
+{% endif %}
+
+{% if booking.travel_class %}
+<p><b>Class:</b> {{booking.travel_class}}</p>
+{% endif %}
+
+{% if booking.passengers %}
+<p><b>Passengers:</b> {{booking.passengers}}</p>
+{% endif %}
+
+<!-- HOTEL -->
+{% if booking.check_in %}
+<p><b>Check-In:</b> {{booking.check_in}}</p>
+<p><b>Check-Out:</b> {{booking.check_out}}</p>
+{% endif %}
+
+<!-- SEATS -->
+{% if booking.seats %}
+<p><b>Seats:</b> {{booking.seats|join:", "}}</p>
+{% endif %}
+
+<!-- TOTAL -->
+{% if booking.total %}
+<p><b>Total Paid:</b> ₹{{booking.total}}</p>
+{% endif %}
+
+<br>
+
+<p>📧 A confirmation email has been sent to your registered email.</p>
+<a href="{% url 'guest_services' %}">Back to Services</a>
+</div>

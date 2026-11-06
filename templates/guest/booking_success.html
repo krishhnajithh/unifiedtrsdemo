@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Booking Success</title>
+
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg,#071a2f,#0b2447);
+    color: white;
+    text-align: center;
+}
+
+.box {
+    margin: 100px auto;
+    background: #0f2a4d;
+    padding: 40px;
+    width: 400px;
+    border-radius: 16px;
+}
+
+h2 {
+    color: #2ecc71;
+}
+
+a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #1e90ff;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>Booking Successful 🎉</h2>
+
+<p>Your seats have been booked successfully.</p>
+
+<a href="{% url 'guest_services' %}">Back to Services</a>
+</div>
+
+</body>
+</html>

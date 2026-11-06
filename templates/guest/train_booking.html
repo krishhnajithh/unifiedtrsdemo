@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Train Booking</title>
+
+<style>
+body{
+background:#081a36;
+color:white;
+font-family:'Poppins', sans-serif;
+margin:0;
+}
+
+/* MAIN CARD */
+.booking-container{
+max-width:700px;
+margin:60px auto;
+background:#0f2a4d;
+padding:40px;
+border-radius:16px;
+box-shadow:0 10px 40px rgba(0,0,0,0.5);
+text-align:center;
+}
+
+.booking-container h2{
+margin-bottom:25px;
+}
+
+/* FORM */
+.form-group{
+text-align:left;
+margin-bottom:18px;
+}
+
+.form-group label{
+display:block;
+margin-bottom:6px;
+font-size:14px;
+opacity:0.8;
+}
+
+.form-group input,
+.form-group select{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:none;
+outline:none;
+background:#13284a;
+color:white;
+}
+
+/* ROW (FROM - TO SIDE BY SIDE) */
+.row{
+display:flex;
+gap:15px;
+}
+
+.row .form-group{
+flex:1;
+}
+
+/* BUTTON */
+.book-btn{
+margin-top:25px;
+padding:14px 30px;
+background:linear-gradient(135deg,#1e90ff,#2563eb);
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.book-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 0 20px rgba(37,99,235,0.6);
+}
+
+/* ERROR */
+.error{
+color:#ff4d4d;
+margin-bottom:15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="booking-container">
+
+<h2>🚆 Book Train - {{ service.name }}</h2>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+{% csrf_token %}
+
+<!-- FROM & TO -->
+<div class="row">
+
+<div class="form-group">
+<label>Boarding Station</label>
+<select name="from_station" required>
+<option value="">Select Boarding</option>
+{% for s in stations %}
+<option value="{{ s }}">{{ s }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="form-group">
+<label>Destination Station</label>
+<select name="to_station" required>
+<option value="">Select Destination</option>
+{% for s in stations %}
+<option value="{{ s }}">{{ s }}</option>
+{% endfor %}
+</select>
+</div>
+
+</div>
+
+<!-- DATE -->
+<div class="form-group">
+<label>Travel Date</label>
+<input type="date" name="travel_date" min="{{ today }}" required>
+</div>
+
+<!-- CLASS -->
+<div class="form-group">
+<label>Class</label>
+
+<select name="travel_class">
+<option value="Sleeper">Sleeper ₹500</option>
+<option value="AC Chair Car">AC Chair Car ₹1200</option>
+<option value="Executive Class">Executive Class ₹2000</option>
+</select>
+
+</div>
+
+<!-- PASSENGERS -->
+<div class="form-group">
+<label>Passengers</label>
+<input type="number" name="passengers" min="1" max="6" required>
+</div>
+
+<!-- SUBMIT -->
+<button class="book-btn" type="submit">
+Continue to Payment →
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<style>
+
+/* PAGE BACKGROUND */
+body{
+background: linear-gradient(135deg,#071a2f,#0b2447);
+font-family: 'Poppins', sans-serif;
+}
+
+/* MAIN CARD */
+.show-container{
+max-width:750px;
+margin:60px auto;
+background:#0f2a4d;
+padding:40px;
+border-radius:16px;
+box-shadow:0 10px 40px rgba(0,0,0,0.45);
+text-align:center;
+color:#e5e7eb;
+}
+
+/* TITLES */
+.show-container h2{
+font-size:26px;
+margin-bottom:10px;
+font-weight:600;
+}
+
+.show-container h3{
+margin-top:25px;
+margin-bottom:12px;
+font-size:15px;
+color:#94a3b8;
+letter-spacing:0.5px;
+}
+
+/* ROW LAYOUT */
+.date-row,
+.time-row{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+margin-top:10px;
+}
+
+/* HIDE RADIO BUTTONS */
+.date-box input,
+.time-box input{
+display:none;
+}
+
+/* OPTION BUTTONS */
+.date-box span,
+.time-box span{
+padding:10px 22px;
+background:#071a2f;
+border:1px solid #1e3a5f;
+border-radius:8px;
+cursor:pointer;
+font-size:14px;
+transition:0.25s;
+color:#cbd5f5;
+}
+
+/* HOVER EFFECT */
+.date-box span:hover,
+.time-box span:hover{
+background:#2563eb;
+color:white;
+border-color:#2563eb;
+}
+
+/* SELECTED OPTION */
+.date-box input:checked + span,
+.time-box input:checked + span{
+background:#22c55e;
+border-color:#22c55e;
+color:white;
+}
+
+/* BUTTON */
+.continue-btn{
+margin-top:30px;
+padding:12px 35px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:8px;
+font-size:15px;
+cursor:pointer;
+transition:0.25s;
+}
+
+.continue-btn:hover{
+background:#1d4ed8;
+}
+
+/* DATE BUTTONS */
+.date-row{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+margin-top:15px;
+}
+
+.date-box input{
+display:none;
+}
+
+.date-box span{
+display:inline-block;
+padding:12px 20px;
+background:#071a2f;
+border:1px solid #1e3a5f;
+border-radius:10px;
+cursor:pointer;
+font-size:14px;
+text-align:center;
+color:#cbd5f5;
+transition:0.25s;
+min-width:90px;
+}
+
+/* Hover */
+.date-box span:hover{
+background:#2563eb;
+color:white;
+border-color:#2563eb;
+}
+
+/* Selected */
+.date-box input:checked + span{
+background:linear-gradient(135deg,#22c55e,#16a34a);
+box-shadow:0 4px 15px rgba(34,197,94,0.4);
+}
+
+/* Small date text */
+.date-box small{
+font-size:12px;
+color:#f9fafc;
+}
+
+</style>
+
+
+<div class="show-container">
+
+<h2>Select Show - {{ service.service_name }}</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<h3>Select Date</h3>
+
+<div class="date-row">
+
+{% for d in dates %}
+<label class="date-box">
+<input type="radio" name="show_date" value="{{ d.value|date:'Y-m-d' }}" required>
+<span>
+{{ d.label }}<br>
+<small>{{ d.value|date:"d M" }}</small>
+</span>
+</label>
+{% endfor %}
+
+</div>
+
+<h3>Select Show Time</h3>
+
+<div class="time-row">
+
+<label class="time-box">
+<input type="radio" name="show_time" value="10:00 AM" required>
+<span>10:00 AM</span>
+</label>
+
+<label class="time-box">
+<input type="radio" name="show_time" value="1:00 PM">
+<span>1:00 PM</span>
+</label>
+
+<label class="time-box">
+<input type="radio" name="show_time" value="4:00 PM">
+<span>4:00 PM</span>
+</label>
+
+<label class="time-box">
+<input type="radio" name="show_time" value="7:00 PM">
+<span>7:00 PM</span>
+</label>
+
+</div>
+
+<button class="continue-btn">Select Seats</button>
+
+</form>
+
+</div>

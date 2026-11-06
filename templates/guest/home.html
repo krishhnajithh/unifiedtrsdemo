@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unified Ticket Reservation System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+    body { background: #0f172a; color: #ffffff; overflow-x: hidden; }
+
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 70px;
+      background: rgba(15, 23, 42, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 50px;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    nav .logo { font-size: 22px; font-weight: 700; }
+
+    nav ul { list-style: none; display: flex; gap: 25px; }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover { color: #38bdf8; }
+
+    /* HERO SECTION */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      text-align: center;
+      z-index: 2;
+      /* background: rgba(15, 23, 42, 0.7); */
+      padding: 20px 40px;
+      border-radius: 12px;
+    }
+
+    /* SCROLLING BACKGROUND */
+    .scroll-bg {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      display: flex;
+      animation: moveBg 30s linear infinite;
+      opacity: 0.35;
+    }
+
+    .scroll-bg img {
+      width: 20%;
+      object-fit: cover;
+    }
+
+    @keyframes moveBg {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ABOUT SECTION */
+    .about {
+      padding: 100px 80px;
+      background: #020617;
+    }
+
+    .about h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .about p {
+      text-align: center;
+      max-width: 900px;
+      margin: auto;
+      color: #cbd5f5;
+      margin-bottom: 60px;
+    }
+
+    /* SERVICES */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+    }
+
+    .service-box {
+      background: #0f172a;
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .service-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .service-box h3 { margin-bottom: 10px; }
+
+    .service-box p { font-size: 14px; color: #94a3b8; }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      background: #020617;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">UTRS</div>
+    <ul>
+      <li><a href="{% url 'guest_login' %}">Login</a></li>
+      <li><a href="{% url 'register' %}">Sign Up</a></li>
+      <li><a href="{% url 'adminapp:admin_login' %}">Admin</a></li>
+
+
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="scroll-bg">
+      <img src="https://images.unsplash.com/photo-1505771215590-c5fa0aec29b8" alt="Train">
+      <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" alt="Bus">
+      <img src="https://images.unsplash.com/photo-1501117716987-c8e1ecb210d4" alt="Hotel">
+      <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" alt="Movie">
+      <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df" alt="Plane">
+      <!-- Duplicate for seamless scroll -->
+      <img src="https://images.unsplash.com/photo-1505771215590-c5fa0aec29b8" alt="Train">
+      <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" alt="Bus">
+      <img src="https://images.unsplash.com/photo-1501117716987-c8e1ecb210d4" alt="Hotel">
+      <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba" alt="Movie">
+      <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df" alt="Plane">
+    </div>
+
+    <h1>Unified Ticket Reservation System</h1>
+  </section>
+
+  <!-- ABOUT & SERVICES -->
+  <section class="about">
+    <h2>About Our Services</h2>
+    <p>
+      Our Unified Ticket Reservation System allows users to book multiple services
+      from a single platform. From transportation to entertainment and accommodation,
+      everything is available with a seamless and secure booking experience.
+    </p>
+
+    <div class="services">
+      <div class="service-box">
+        <h3>Train Tickets</h3>
+        <p>Book intercity and long‑distance train tickets easily.</p>
+      </div>
+      <div class="service-box">
+        <h3>Bus Tickets</h3>
+        <p>Reserve seats for private and government buses.</p>
+      </div>
+      <div class="service-box">
+        <h3>Restaurants</h3>
+        <p>Search and book top restaurants around you.</p>
+      </div>
+      <div class="service-box">
+        <h3>Hotels</h3>
+        <p>Find and reserve hotels at your destination.</p>
+      </div>
+      <div class="service-box">
+        <h3>Movies</h3>
+        <p>Book movie tickets at nearby theatres instantly.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Unified Ticket Reservation System. All rights reserved.
+  </footer>
+
+</body>
+</html>

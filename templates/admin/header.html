@@ -1,0 +1,124 @@
+<!-- ADMIN COMMON HEADER (TOP BAR + SIDEBAR) -->
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: #071428;
+        color: white;
+    }
+
+    /* TOPBAR */
+    .topbar {
+        height: 70px;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(8px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 40px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .topbar .logo {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: #4da3ff;
+    }
+
+    .topbar .actions {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .topbar .actions i {
+        font-size: 18px;
+        cursor: pointer;
+        transition: 0.3s;
+        color: #cbd5e1;
+    }
+
+    .topbar .actions i:hover {
+        color: #4da3ff;
+    }
+
+    /* LAYOUT */
+    .layout {
+        display: flex;
+        min-height: calc(100vh - 70px);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+        width: 260px;
+        background: #0e1f3b;
+        padding-top: 30px;
+        border-right: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 30px;
+        color: #cbd5e1;
+        text-decoration: none;
+        font-size: 15px;
+        transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+        background: rgba(77,163,255,0.08);
+        color: #4da3ff;
+    }
+
+    .sidebar a.active {
+        background: rgba(77,163,255,0.15);
+        color: #4da3ff;
+        border-left: 4px solid #4da3ff;
+    }
+
+    /* CONTENT */
+    .content {
+        flex: 1;
+        padding: 50px 60px;
+    }
+</style>
+
+<div class="topbar">
+    <div class="logo">UTRS Admin</div>
+
+    <div class="actions">
+        <i class="fa-solid fa-bell"></i>
+        <a href="{% url 'adminapp:admin_logout' %}" style="color:inherit;">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+    </div>
+</div>
+
+<div class="layout">
+
+    <div class="sidebar">
+        <a href="{% url 'adminapp:admin_dashboard' %}" class="active">
+            <i class="fa-solid fa-chart-line"></i> Dashboard
+        </a>
+
+        <a href="{% url 'adminapp:admin_users' %}">
+            <i class="fa-solid fa-users"></i> Users
+        </a>
+
+        <a href="{% url 'adminapp:admin_services' %}">
+            <i class="fa-solid fa-layer-group"></i> Services
+        </a>
+
+        <a href="{% url 'adminapp:admin_bookings' %}">
+            <i class="fa-solid fa-ticket"></i> Bookings
+        </a>
+    </div>
+
+    <div class="content">

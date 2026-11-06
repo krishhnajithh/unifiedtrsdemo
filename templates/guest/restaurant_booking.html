@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Table</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg,#071a2f,#0b2447);
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #0f2a4d;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        label {
+            color: #9fb3d1;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* TIME */
+        .time-slots {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .time-slots div {
+            padding: 10px 18px;
+            background: #132f55;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .time-slots div:hover {
+            background: #1e90ff;
+        }
+
+        .time-slots .active {
+            background: #2563eb;
+        }
+
+        /* GUEST */
+        .guest-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .guest-box div {
+            width: 45px;
+            height: 45px;
+            background: #132f55;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .guest-box .active {
+            background: #2ecc71;
+        }
+
+        /* TABLE GRID */
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+        }
+
+        .table-box {
+            padding: 20px;
+            background: #1e3a5f;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .table-box:hover {
+            transform: scale(1.05);
+        }
+
+        .table-box.booked {
+            background: #8b0000;
+            cursor: not-allowed;
+        }
+
+        .table-box.selected {
+            background: #2ecc71;
+        }
+
+        /* BUTTON */
+        .btn {
+            margin-top: 25px;
+            padding: 14px 25px;
+            background: linear-gradient(135deg,#1e90ff,#2563eb);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            box-shadow: 0 0 20px rgba(37,99,235,0.6);
+        }
+
+        .error {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>🍽 Book Table - {{ restaurant.name }}</h2>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- TIME -->
+        <div class="section">
+            <label>Select Time</label>
+            <div class="time-slots">
+                <div onclick="selectTime(this)" data-time="18:00">6:00 PM</div>
+                <div onclick="selectTime(this)" data-time="19:00">7:00 PM</div>
+                <div onclick="selectTime(this)" data-time="20:00">8:00 PM</div>
+                <div onclick="selectTime(this)" data-time="21:00">9:00 PM</div>
+            </div>
+        </div>
+
+        <!-- GUEST -->
+        <div class="section">
+            <label>How many people?</label>
+            <div class="guest-box">
+                <div onclick="selectGuests(this)" data-value="1">1</div>
+                <div onclick="selectGuests(this)" data-value="2">2</div>
+                <div onclick="selectGuests(this)" data-value="3">3</div>
+                <div onclick="selectGuests(this)" data-value="4">4</div>
+                <div onclick="selectGuests(this)" data-value="5">5+</div>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="section">
+            <label>Select Table</label>
+
+            <div class="table-grid">
+                {% for table in tables %}
+                    <div 
+                        class="table-box {% if table.id in booked_tables %}booked{% endif %}"
+                        data-id="{{ table.id }}"
+                        onclick="selectTable(this)"
+                    >
+                        Table {{ table.table_number }} <br>
+                        {{ table.seats }} seats
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- HIDDEN INPUTS -->
+        <input type="hidden" name="time" id="selectedTime">
+        <input type="hidden" name="guests" id="selectedGuests">
+        <input type="hidden" name="table" id="selectedTable">
+
+        <button type="submit" class="btn">Confirm Booking</button>
+
+    </form>
+
+</div>
+
+<script>
+function selectTime(el) {
+    document.querySelectorAll(".time-slots div").forEach(e => e.classList.remove("active"));
+    el.classList.add("active");
+    document.getElementById("selectedTime").value = el.dataset.time;
+}
+
+function selectGuests(el) {
+    document.querySelectorAll(".guest-box div").forEach(e => e.classList.remove("active"));
+    el.classList.add("active");
+    document.getElementById("selectedGuests").value = el.dataset.value;
+}
+
+function selectTable(el) {
+    if (el.classList.contains("booked")) return;
+
+    document.querySelectorAll(".table-box").forEach(e => e.classList.remove("selected"));
+    el.classList.add("selected");
+    document.getElementById("selectedTable").value = el.dataset.id;
+}
+</script>
+
+</body>
+</html>

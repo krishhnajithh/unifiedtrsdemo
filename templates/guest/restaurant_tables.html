@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select Table</title>
+
+<style>
+body {
+    background: linear-gradient(135deg,#071a2f,#0b2447);
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    margin: 0;
+}
+
+/* MAIN CARD */
+.container {
+    max-width: 600px;
+    margin: 80px auto;
+    background: #0f2a4d;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+/* TITLE */
+h2 {
+    margin-bottom: 10px;
+}
+
+/* SCREEN STYLE (like movie booking) */
+.screen {
+    margin: 20px auto;
+    width: 80%;
+    height: 30px;
+    background: #1e90ff;
+    border-radius: 50px;
+    box-shadow: 0 5px 20px rgba(30,144,255,0.5);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 40px;
+    justify-items: center;
+    margin-top: 30px;
+}
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+/* ROUND TABLE */
+.table-circle {
+    width: 70px;
+    height: 70px;
+    background: #132f55;
+    border-radius: 50%;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* STATES */
+.table-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(30,144,255,0.6);
+}
+
+.table-circle.selected {
+    background: #2ecc71;
+    box-shadow: 0 0 20px rgba(46,204,113,0.8);
+}
+
+.table-circle.booked {
+    background: #8b0000;
+   
+}
+
+/* CHAIRS */
+.chair {
+    width: 18px;
+    height: 18px;
+    background: #1e90ff;
+    border-radius: 50%;   /* round chairs 🔥 */
+    position: absolute;
+    box-shadow: 0 0 8px rgba(30,144,255,0.6);
+}
+
+/* POSITION CHAIRS */
+.top { top: 0; left: 50%; transform: translateX(-50%); }
+.bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
+.left { left: 0; top: 50%; transform: translateY(-50%); }
+.right { right: 0; top: 50%; transform: translateY(-50%); }
+
+/* TABLE */
+.table {
+    width: 70px;
+    height: 70px;
+    background: #132f55;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+/* HOVER */
+.table:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(30,144,255,0.6);
+}
+
+/* STATES */
+.table.selected {
+    background: #2ecc71;
+}
+
+.table.booked {
+    background: #8b0000;
+    cursor: not-allowed;
+}
+
+/* LEGEND */
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.legend div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.box {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+}
+
+.available { background: #132f55; }
+.selected-box { background: #2ecc71; }
+.booked-box { background: #8b0000; }
+
+/* BUTTON */
+.btn {
+    margin-top: 30px;
+    padding: 14px 30px;
+    background: linear-gradient(135deg,#1e90ff,#2563eb);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(37,99,235,0.6);
+}
+
+.error {
+    color: red;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🍽 Select Table</h2>
+
+<div class="screen">Dining Area</div>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+{% csrf_token %}
+
+<div class="layout">
+
+{% for table in tables %}
+<div class="table-wrapper">
+
+    <!-- CHAIRS -->
+    <div class="chair top"></div>
+    <div class="chair left"></div>
+    <div class="chair right"></div>
+    <div class="chair bottom"></div>
+
+    <!-- TABLE -->
+    <div class="table-circle {% if table.id in booked_tables %}booked{% endif %}"
+         onclick="selectTable(this)"
+         data-id="{{ table.id }}">
+        {{ table.table_number }}
+    </div>
+
+</div>
+{% endfor %}
+
+</div>
+
+<input type="hidden" name="table" id="selectedTable">
+
+<button class="btn" id="confirmBtn" disabled>Confirm Booking</button>
+</form>
+
+<!-- LEGEND -->
+<div class="legend">
+    <div><div class="box available"></div> Available</div>
+    <div><div class="box selected-box"></div> Selected</div>
+    <div><div class="box booked-box"></div> Booked</div>
+</div>
+
+</div>
+
+<script>
+function selectTable(el) {
+
+    if (el.classList.contains("booked")) return;
+
+    document.querySelectorAll(".table-circle").forEach(e => {
+        e.classList.remove("selected");
+    });
+
+    el.classList.add("selected");
+
+    document.getElementById("selectedTable").value = el.dataset.id;
+
+    document.getElementById("confirmBtn").disabled = false;
+}
+</script>
+
+</body>
+</html>
